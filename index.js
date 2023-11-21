@@ -1,8 +1,20 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
 const crypto = require('crypto');
-require('dotenv').config()
+
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb+srv://bernardovpp:fQySC85zha5DVbPa@cluster0.e2avfpq.mongodb.net/?retryWrites=true&w=majority', 
+//                 {useNewUrlParser: true, useUnifiedTopology:  true});
+// var usernameSchema = new mongoose.Schema({
+//   username: String,
+//   _id: String
+// });
+
+// var User = mongoose.model('username', usernameSchema);
+
 
 app.use(cors())
 app.use(express.static('public'))
@@ -11,13 +23,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/users', (req, res) => {
-  let username = req.body.username;
-  const hash = crypto.createHash('sha256');
-  hash.update(username);
+  let username = {
+    username: req.body.username,
+    _id: crypto.createHash('sha256').update(username).digest('hex')
+  };
+  // const hash = crypto.createHash('sha256');
+  // hash.update(username);
   
-  const _id = hash.digest('hex');
+  // const _id = hash.digest('hex');
 
-  res.json({username: username, _id});
+  res.json({username});
 });
 
 
