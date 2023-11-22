@@ -10,8 +10,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://bernardovpp:fQySC85zha5DVbPa@cluster0.e2avfpq.mongodb.net/?retryWrites=true&w=majority');
 
 var usernameSchema = new mongoose.Schema({
-  username: String,
-  _id: String
+  username: String
 });
 
 var User = mongoose.model('username', usernameSchema);
@@ -27,13 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/users', (req, res) => {
-
-  let username = req.body.username;
-
-  const hash = crypto.createHash('sha256');
-  hash.update(username);
-
-  var user = new User({ username: req.body.username, _id: hash.digest('hex') });
+  var user = new User({ username: req.body.username});
 
   user.save();
 
